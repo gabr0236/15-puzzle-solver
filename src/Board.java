@@ -74,7 +74,7 @@ public class Board {
     private int[] getCoordinatesOfTile(int tile){
         for (int i = 0; i < dimensions; i++) {
             for (int j = 0; j < dimensions; j++) {
-                if (orderedTiles[i][j]==tile) return new int[]{i, j};
+                if (tiles[i][j]==tile) return new int[]{i, j};
             }
         }
         return null;
@@ -189,7 +189,12 @@ public class Board {
         System.out.println(board);
         System.out.println(board.hamming());
         System.out.println(board.manhattan());
-        System.out.println(board2.isGoal());
+
+        System.out.println("ITERABLE TEST");
+        Iterable<Board> boards = board.neighbors();
+        for (Board b:boards) {
+            System.out.println(b.toString());
+        }
     }
 
 }
