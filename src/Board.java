@@ -91,7 +91,18 @@ public class Board {
     }
 
     // does this board equal y?
-    //public boolean equals(Object y)
+    public boolean equals(Object y){
+        if(this==y) return true;
+
+        if (y instanceof Board){
+            if (((Board) y).dimension() == this.dimensions){
+                if (y.toString()==this.toString()){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     // all neighboring boards
     //public Iterable<Board> neighbors()
