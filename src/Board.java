@@ -42,21 +42,43 @@ public class Board {
         int count = 0;
         for (int i = 0; i < dimensions; i++) {
             for (int j = 0; j < dimensions; j++) {
-                if (orderedTiles[i][j]!=tiles[i][j]) count++;
+                if (orderedTiles[i][j]!=0) {
+                    if (orderedTiles[i][j] != tiles[i][j]) count++;
+                }
             }
         }
         return count;
     }
 
     // sum of Manhattan distances between tiles and goal
-    //public int manhattan(){
-    //    int count = 0;
+    public int manhattan(){
+        int count = 0;
+        for (int i = 0; i < dimensions; i++) {
+            for (int j = 0; j < dimensions; j++) {
+                if (orderedTiles[i][j]!=tiles[i][j]){
+                    for (int k = 0; k < dimensions; k++) {
+                        for (int l = 0; l < dimensions; l++) {
+                            if(orderedTiles[i][j]==tiles[k][l]){
+                                count+=Math.abs((i+j)-(k+l));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+    //private int[] getIndexOfTile(int tile){
     //    for (int i = 0; i < dimensions; i++) {
     //        for (int j = 0; j < dimensions; j++) {
-    //
+    //            if (orderedTiles[i][j]==tile) return new int[]{i, j};
     //        }
     //    }
+    //    return
     //}
+
+
 
     // is this board the goal board?
     //public boolean isGoal()
@@ -72,10 +94,11 @@ public class Board {
 
     // unit testing (not graded)
     public static void main(String[] args){
-        int boardarr[][] = {{1,2,3},{4,5,6},{7,8,0}};
+        int boardarr[][] = {{8,1,3},{4,0,2},{7,6,5}};
         Board board = new Board(boardarr);
         System.out.println(board);
         System.out.println(board.hamming());
+        System.out.println(board.manhattan());
     }
 
 }
