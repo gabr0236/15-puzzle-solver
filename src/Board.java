@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class Board {
 
     private final int[][] tiles;
@@ -69,13 +71,13 @@ public class Board {
         return count;
     }
 
-    private int[] getIndexOfTile(int tile){
+    private int[] getCoordinatesOfTile(int tile){
         for (int i = 0; i < dimensions; i++) {
             for (int j = 0; j < dimensions; j++) {
                 if (orderedTiles[i][j]==tile) return new int[]{i, j};
             }
         }
-        return new int[2];
+        return null;
     }
 
     // is this board the goal board?
@@ -103,7 +105,76 @@ public class Board {
     }
 
     // all neighboring boards
-    //public Iterable<Board> neighbors()
+    public Iterable<Board> neighbors(){
+        List<Board> neighbors = new ArrayList<>();
+        int[] coordinatesOfTile0 = getCoordinatesOfTile(0);
+
+        int[][] copyOfBoard;
+        int x0, y0;
+        boolean isInsideDimensions;
+        for (int i = 0; i < 4; i++) {
+            isInsideDimensions=false;
+            x0=coordinatesOfTile0[0];//TODO: dictionary? tuple?
+            y0=coordinatesOfTile0[1];
+            copyOfBoard = copyBoardArr();
+
+            switch (i){ //tODO: Method for swapping?
+                case 0:
+                    if (x0+1<dimensions){
+                        //Swap
+                        int temp = copyOfBoard[x0][y0];
+                        copyOfBoard[x0][y0] = copyOfBoard[x0+1][y0];
+                        copyOfBoard[x0+1][y0]=temp;
+                        isInsideDimensions=true;
+                    }
+                break;
+                case 1:
+                    if (x0-1<dimensions){
+                        //Swap
+                        int temp = copyOfBoard[x0][y0];
+                        copyOfBoard[x0][y0] = copyOfBoard[x0-1][y0];
+                        copyOfBoard[x0-1][y0]=temp;
+                        isInsideDimensions=true;
+                    }
+                    break;
+                case 2:
+                    if (y0+1<dimensions){
+                        //Swap
+                        int temp = copyOfBoard[x0][y0];
+                        copyOfBoard[x0][y0] = copyOfBoard[x0][y0+1];
+                        copyOfBoard[x0][y0+1]=temp;
+                        isInsideDimensions=true;
+                    }
+                    break;
+                case 3:
+                    if (y0-1<dimensions){
+                        //Swap
+                        int temp = copyOfBoard[x0][y0];
+                        copyOfBoard[x0][y0] = copyOfBoard[x0][y0-1];
+                        copyOfBoard[x0][y0-1]=temp;
+                        isInsideDimensions=true;
+                    }
+                    break;
+            }
+            if (isInsideDimensions){
+                neighbors.add(new Board(copyOfBoard));
+            }
+        }
+        return neighbors;
+    }
+
+
+
+    //Returns a copy of the board array
+    private int[][] copyBoardArr(){
+        int [][] arr = new int[dimensions][dimensions];
+        for (int i = 0; i < dimensions; i++) {
+            for (int j = 0; j < dimensions; j++) {
+                arr[i][j]=tiles[i][j];
+            }
+        }
+        return arr;
+    }
 
     // a board that is obtained by exchanging any pair of tiles
     //public Board twin()
