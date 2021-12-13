@@ -69,19 +69,26 @@ public class Board {
         return count;
     }
 
-    //private int[] getIndexOfTile(int tile){
-    //    for (int i = 0; i < dimensions; i++) {
-    //        for (int j = 0; j < dimensions; j++) {
-    //            if (orderedTiles[i][j]==tile) return new int[]{i, j};
-    //        }
-    //    }
-    //    return
-    //}
+    private int[] getIndexOfTile(int tile){
+        for (int i = 0; i < dimensions; i++) {
+            for (int j = 0; j < dimensions; j++) {
+                if (orderedTiles[i][j]==tile) return new int[]{i, j};
+            }
+        }
+        return new int[2];
+    }
 
 
 
     // is this board the goal board?
-    //public boolean isGoal()
+    public boolean isGoal(){
+        for (int i = 0; i < dimensions; i++) {
+            for (int j = 0; j < dimensions; j++) {
+                if (orderedTiles[i][j]!=tiles[i][j]) return false;
+            }
+        }
+        return true;
+    }
 
     // does this board equal y?
     //public boolean equals(Object y)
@@ -95,10 +102,14 @@ public class Board {
     // unit testing (not graded)
     public static void main(String[] args){
         int boardarr[][] = {{8,1,3},{4,0,2},{7,6,5}};
+        int boardarr2[][] = {{1,2,3},{4,5,6},{7,8,0}};
         Board board = new Board(boardarr);
+        Board board2 = new Board(boardarr2);
+
         System.out.println(board);
         System.out.println(board.hamming());
         System.out.println(board.manhattan());
+        System.out.println(board2.isGoal());
     }
 
 }
