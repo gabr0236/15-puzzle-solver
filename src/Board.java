@@ -78,8 +78,6 @@ public class Board {
         return new int[2];
     }
 
-
-
     // is this board the goal board?
     public boolean isGoal(){
         for (int i = 0; i < dimensions; i++) {
