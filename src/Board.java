@@ -1,4 +1,5 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Board {
 
@@ -115,11 +116,11 @@ public class Board {
         boolean isInsideDimensions;
         for (int i = 0; i < 4; i++) {
             isInsideDimensions = false;
-            x0 = coordinatesOfTile0[0];//TODO: dictionary? tuple?
+            x0 = coordinatesOfTile0[0];
             y0 = coordinatesOfTile0[1];
             copyOfBoard = copyBoardArr();
 
-            switch (i) { //tODO: Method for swapping?
+            switch (i) {
                 case 0:
                     if (x0 + 1 < dimensions) {
                         //Swap

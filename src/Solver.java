@@ -76,14 +76,14 @@ public class Solver {
             return moves;
         }
 
-        public int getHamming() {
-            return board.hamming();
+        public int getManhattan() {
+            return board.manhattan();
         }
 
         @Override
         public int compare(SearchNode o1, SearchNode o2) {
-            if (o1.getHamming() < o2.getHamming()) return -1;
-            if (o1.getHamming() > o2.getHamming()) return 1;
+            if (o1.getManhattan() < o2.getManhattan()) return -1;
+            if (o1.getManhattan() > o2.getManhattan()) return 1;
             else return 0;
         }
     }
