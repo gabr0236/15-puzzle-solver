@@ -162,8 +162,8 @@ public class Board {
 
     // unit testing (not graded)
     public static void main(String[] args) {
-        int[][] boardarr = {{1, 2, 3}, {0, 7, 6}, {5, 4, 8}};//{{2,1},{0,3}};
-        Board board = new Board(boardarr);
+        int[][] boardArr = {{1, 2, 3}, {0, 7, 6}, {5, 4, 8}};//{{2,1},{0,3}};
+        Board board = new Board(boardArr);
 
         System.out.println(board);
         System.out.println("HAMMING: " + board.hamming());

@@ -3,16 +3,13 @@ import edu.princeton.cs.algs4.MinPQ;
 import edu.princeton.cs.algs4.Stack;
 import edu.princeton.cs.algs4.StdOut;
 
-import java.util.Comparator;
-
 public class Solver {
     private boolean isSolvable = false;
-    private int minMoves;
     private final Stack<Board> solutionBoards = new Stack<>();
 
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
-        if (initial == null) throw new NullPointerException();
+        if (initial == null) throw new IllegalArgumentException();
         MinPQ<SearchNode> searchNodes = new MinPQ<>();
 
         searchNodes.insert(new SearchNode(initial, null));
