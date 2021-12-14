@@ -6,7 +6,6 @@ import edu.princeton.cs.algs4.StdOut;
 import java.util.Comparator;
 
 public class Solver {
-
     private boolean isSolvable = false;
     private final int minMoves;
     private final Stack<Board> solutionBoards = new Stack<>();
@@ -60,7 +59,7 @@ public class Solver {
         return isSolvable ? solutionBoards : null;
     }
 
-    private class SearchNode implements Comparator<SearchNode> {
+    private class SearchNode implements Comparable<SearchNode> {
 
         private final Board board;
         private final int moves;
@@ -81,9 +80,9 @@ public class Solver {
         }
 
         @Override
-        public int compare(SearchNode o1, SearchNode o2) {
-            if (o1.getManhattan() < o2.getManhattan()) return -1;
-            if (o1.getManhattan() > o2.getManhattan()) return 1;
+        public int compareTo(SearchNode o) {
+            if (getManhattan() < o.getManhattan()) return -1;
+            if (getManhattan() > o.getManhattan()) return 1;
             else return 0;
         }
     }
