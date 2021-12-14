@@ -28,13 +28,13 @@ public class Board {
 
     // string representation of this board
     public String toString() {
-        String string = dimensions + "\n";
+        StringBuilder string = new StringBuilder(dimensions + "\n");
         for (int i = 0; i < dimensions; i++) {
             for (int j = 0; j < dimensions; j++) {
-                string += (tiles[i][j] + ((j + 1 >= dimensions ? "\n" : " ")));
+                string.append(tiles[i][j]).append(j + 1 >= dimensions ? "\n" : " ");
             }
         }
-        return string;
+        return string.toString();
     }
 
     // board dimension n
@@ -99,9 +99,7 @@ public class Board {
 
         if (y instanceof Board) {
             if (((Board) y).dimension() == this.dimensions) {
-                if (y.toString() == this.toString()) {
-                    return true;
-                }
+                return y.toString().equals(this.toString());
             }
         }
         return false;
@@ -178,14 +176,14 @@ public class Board {
     }
 
     // a board that is obtained by exchanging any pair of tiles
-    public Board twin(){
+    public Board twin() {
         for (int i = 1; i < dimensions; i++) {
             for (int j = 1; j < dimensions; j++) {
                 if (tiles[i][j - 1] != 0 && tiles[i][j] != 0) {
                     int[][] twinBoard = copyBoardArr();
                     int temp = twinBoard[i][j - 1];
-                    twinBoard[i][j - 1]=twinBoard[i][j];
-                    twinBoard[i][j]=temp;
+                    twinBoard[i][j - 1] = twinBoard[i][j];
+                    twinBoard[i][j] = temp;
                     return new Board(twinBoard);
                 }
             }
@@ -194,11 +192,9 @@ public class Board {
     }
 
     // unit testing (not graded)
-    public static void main(String[] args){
-        int boardarr[][] = {{8,1,3},{4,0,2},{7,6,5}};
-        int boardarr2[][] = {{1,2,3},{4,5,6},{7,8,0}};
+    public static void main(String[] args) {
+        int[][] boardarr = {{8, 1, 3}, {4, 0, 2}, {7, 6, 5}};
         Board board = new Board(boardarr);
-        Board board2 = new Board(boardarr2);
 
         System.out.println(board);
         System.out.println(board.hamming());
@@ -206,7 +202,7 @@ public class Board {
 
         System.out.println("ITERABLE TEST");
         Iterable<Board> boards = board.neighbors();
-        for (Board b:boards) {
+        for (Board b : boards) {
             System.out.println(b.toString());
         }
 
