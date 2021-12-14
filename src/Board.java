@@ -65,7 +65,7 @@ public class Board {
             for (int j = 0; j < dimensions; j++) {
                 if (orderedTiles[i][j]!=0 && orderedTiles[i][j] != tiles[i][j]) {
                    coordinatesOfTile = getCoordinatesOfTile(orderedTiles[i][j]);
-                   count += Math.abs((i + j) - (coordinatesOfTile[0] + coordinatesOfTile[1]));
+                   count += Math.abs(i - coordinatesOfTile[0]) + Math.abs(j - coordinatesOfTile[1]);
                 }
             }
         }
@@ -191,7 +191,7 @@ public class Board {
 
     // unit testing (not graded)
     public static void main(String[] args) {
-        int[][] boardarr = {{0, 1, 3}, {4, 2, 5}, {7, 8, 6}};
+        int[][] boardarr = {{1, 2, 3}, {0, 7, 6}, {5, 4, 8}};
         Board board = new Board(boardarr);
 
         System.out.println(board);
