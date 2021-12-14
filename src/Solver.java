@@ -7,13 +7,12 @@ import java.util.Comparator;
 
 public class Solver {
     private boolean isSolvable = false;
-    private final int minMoves;
+    private int minMoves;
     private final Stack<Board> solutionBoards = new Stack<>();
 
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
         if (initial == null) throw new NullPointerException();
-
         MinPQ<SearchNode> searchNodes = new MinPQ<>();
 
         searchNodes.insert(new SearchNode(initial, null));
@@ -23,25 +22,23 @@ public class Solver {
             SearchNode searchNode = searchNodes.delMin();
 
             for (Board board : searchNode.board.neighbors()) {
-                if ((searchNode.previousSearchNode == null || !searchNode.board.equals(board))
-                        && !board.equals(initial)) {
+                if ((searchNode.previousSearchNode == null || !searchNode.board.equals(board)) && !board.equals(initial)) {
                     searchNodes.insert(new SearchNode(board, searchNode));
-                    if (board.isGoal()) {
-                        solutionBoards.push(board);
-                    }
                 }
             }
         }
 
         //Find out if the solution came from the twin or the initial board
-        SearchNode initialNode = searchNodes.min();
-        while (initialNode.previousSearchNode != null) {
-            initialNode = initialNode.previousSearchNode;
+        SearchNode currentNode = searchNodes.min();
+        while (currentNode.previousSearchNode != null) {
+            solutionBoards.push(currentNode.board);
+            currentNode = currentNode.previousSearchNode;
         }
-        if (initialNode.board.equals(initial)) {
+        solutionBoards.push(currentNode.board);
+
+        if (currentNode.board.equals(initial)) {
             isSolvable = true;
         }
-        minMoves = searchNodes.min().moves;
     }
 
     // is the initial board solvable? (see below)
@@ -51,7 +48,7 @@ public class Solver {
 
     // min number of moves to solve initial board; -1 if unsolvable
     public int moves() {
-        return isSolvable ? minMoves : -1;
+        return isSolvable ? solutionBoards.size()-1 : -1;
     }
 
     // sequence of boards in a shortest solution; null if unsolvable
