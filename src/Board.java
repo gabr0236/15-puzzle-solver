@@ -20,6 +20,7 @@ public class Board {
         }
     }
 
+    //TODO Del:
     private int[][] goalBoard(){
         int[][] orderedTiles = new int[dimensions][dimensions];
         int count = 1;
@@ -54,15 +55,16 @@ public class Board {
     // number of tiles out of place
     public int hamming() {
         int[][] orderedTiles = goalBoard();
-        int count = 0;
+        int k = 0;
+        int hammingCount = 0;
         for (int i = 0; i < dimensions; i++) {
             for (int j = 0; j < dimensions; j++) {
-                if (orderedTiles[i][j] != 0) {
-                    if (orderedTiles[i][j] != tiles[i][j]) count++;
+                if (++k<dimensions) {
+                    if (++k != tiles[i][j]) hammingCount++;
                 }
             }
         }
-        return count;
+        return hammingCount;
     }
 
     // sum of Manhattan distances between tiles and goal
