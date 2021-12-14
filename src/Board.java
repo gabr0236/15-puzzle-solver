@@ -5,17 +5,23 @@ import java.util.List;
 public class Board {
 
     private final int[][] tiles;
-    private final int[][] orderedTiles;
     private final int dimensions;
 
     // create a board from an n-by-n array of tiles,
     // where tiles[row][col] = tile at (row, col)
     public Board(int[][] tiles) {
         if (tiles.length != tiles[0].length) throw new IllegalArgumentException();
-        this.tiles = tiles;
         dimensions = tiles.length;
+        this.tiles = new int[dimensions][dimensions];
+        for (int i = 0; i < dimensions; i++) {
+            for (int j = 0; j < dimensions; j++) {
+                this.tiles[i][j] = tiles[i][j];
+            }
+        }
+    }
 
-        orderedTiles = new int[dimensions][dimensions];
+    private int[][] goalBoard(){
+        int[][] orderedTiles = new int[dimensions][dimensions];
         int count = 1;
         for (int i = 0; i < dimensions; i++) {
             for (int j = 0; j < dimensions; j++) {
@@ -26,6 +32,7 @@ public class Board {
                 }
             }
         }
+        return orderedTiles;
     }
 
     // string representation of this board
@@ -46,6 +53,7 @@ public class Board {
 
     // number of tiles out of place
     public int hamming() {
+        int[][] orderedTiles = goalBoard();
         int count = 0;
         for (int i = 0; i < dimensions; i++) {
             for (int j = 0; j < dimensions; j++) {
@@ -59,6 +67,7 @@ public class Board {
 
     // sum of Manhattan distances between tiles and goal
     public int manhattan() {
+        int[][] orderedTiles = goalBoard();
         int count = 0;
         int[] coordinatesOfTile;
         for (int i = 0; i < dimensions; i++) {
@@ -85,6 +94,7 @@ public class Board {
 
     // is this board the goal board?
     public boolean isGoal() {
+        int[][] orderedTiles = goalBoard();
         for (int i = 0; i < dimensions; i++) {
             for (int j = 0; j < dimensions; j++) {
                 if (orderedTiles[i][j] != tiles[i][j]) return false;
