@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Board {
@@ -14,26 +13,8 @@ public class Board {
         dimensions = tiles.length;
         this.tiles = new int[dimensions][dimensions];
         for (int i = 0; i < dimensions; i++) {
-            for (int j = 0; j < dimensions; j++) {
-                this.tiles[i][j] = tiles[i][j];
-            }
+            System.arraycopy(tiles[i], 0, this.tiles[i], 0, dimensions);
         }
-    }
-
-    //TODO Del:
-    private int[][] goalBoard(){
-        int[][] orderedTiles = new int[dimensions][dimensions];
-        int count = 1;
-        for (int i = 0; i < dimensions; i++) {
-            for (int j = 0; j < dimensions; j++) {
-                if (i + 1 >= dimensions && j + 1 >= dimensions) {
-                    orderedTiles[i][j] = 0;
-                } else {
-                    orderedTiles[i][j] = count++;
-                }
-            }
-        }
-        return orderedTiles;
     }
 
     // string representation of this board
@@ -54,8 +35,7 @@ public class Board {
 
     // number of tiles out of place
     public int hamming() {
-        int[][] orderedTiles = goalBoard();
-        int k = 0;
+        int k = 0; //Correct tile at current position
         int numberOfTiles = dimensions*dimensions;
         int hammingCount = 0;
         for (int i = 0; i < dimensions; i++) {
@@ -70,16 +50,15 @@ public class Board {
 
     // sum of Manhattan distances between tiles and goal
     public int manhattan() {
-        int[][] orderedTiles = goalBoard();
         int count = 0;
+        int k = 0; //Correct tile at current position
+        int numberOfTiles = dimensions*dimensions;
         int[] coordinatesOfTile;
         for (int i = 0; i < dimensions; i++) {
             for (int j = 0; j < dimensions; j++) {
-                if (orderedTiles[i][j]!=0 && orderedTiles[i][j] != tiles[i][j]) {
-                    coordinatesOfTile = getCoordinatesOfTile(orderedTiles[i][j]);
-                    if (coordinatesOfTile.length != 0) {
-                        count += Math.abs(i - coordinatesOfTile[0]) + Math.abs(j - coordinatesOfTile[1]);
-                    }
+                if (++k<numberOfTiles && k != tiles[i][j]) {
+                    coordinatesOfTile = getCoordinatesOfTile(k);
+                    count += Math.abs(i - coordinatesOfTile[0]) + Math.abs(j - coordinatesOfTile[1]);
                 }
             }
         }
@@ -97,10 +76,11 @@ public class Board {
 
     // is this board the goal board?
     public boolean isGoal() {
-        int[][] orderedTiles = goalBoard();
+        int k = 0; //Correct tile at current position
+        int numberOfTiles = dimensions*dimensions;
         for (int i = 0; i < dimensions; i++) {
             for (int j = 0; j < dimensions; j++) {
-                if (orderedTiles[i][j] != tiles[i][j]) return false;
+                if (++k<numberOfTiles && k!= tiles[i][j]) return false;
             }
         }
         return true;
@@ -109,7 +89,6 @@ public class Board {
     // does this board equal y?
     public boolean equals(Object y) {
         if (this == y) return true;
-
         if (y instanceof Board) {
             if (((Board) y).dimension() == this.dimensions) {
                 return y.toString().equals(this.toString());
@@ -122,59 +101,36 @@ public class Board {
     public Iterable<Board> neighbors() {
         List<Board> neighbors = new ArrayList<>();
         int[] coordinatesOfTile0 = getCoordinatesOfTile(0);
+        int x1 = coordinatesOfTile0[0], y1 = coordinatesOfTile0[1];
 
-        int[][] copyOfBoard;
-        int x0, y0;
-        boolean isInsideDimensions;
         for (int i = 0; i < 4; i++) {
-            isInsideDimensions = false;
-            x0 = coordinatesOfTile0[0];
-            y0 = coordinatesOfTile0[1];
-            copyOfBoard = copyBoardArr();
-
-            switch (i) {
-                case 0:
-                    if (x0 + 1 < dimensions) {
-                        //Swap
-                        int temp = copyOfBoard[x0][y0];
-                        copyOfBoard[x0][y0] = copyOfBoard[x0 + 1][y0];
-                        copyOfBoard[x0 + 1][y0] = temp;
-                        isInsideDimensions = true;
+            if (i==0) {
+                if (x1 + 1 < dimensions) {
+                    neighbors.add(new Board(swapTileZero(copyBoardArr(), x1, y1, x1 + 1, y1)));
+                }
+            } else if (i==1) {
+                if (x1 - 1 >= 0 && x1 - 1 < dimensions) {
+                    neighbors.add(new Board(swapTileZero(copyBoardArr(), x1, y1, x1 - 1, y1)));
+                }
+            } else if (i==2) {
+                if (y1 + 1 < dimensions) {
+                    neighbors.add(new Board(swapTileZero(copyBoardArr(), x1, y1, x1, y1 + 1)));
+                }
+            } else {
+                    if (y1-1>=0 && y1 - 1 < dimensions) {
+                        neighbors.add(new Board(swapTileZero(copyBoardArr(), x1, y1, x1,y1-1)));
                     }
-                    break;
-                case 1:
-                    if (x0-1>=0 && x0 - 1 < dimensions) {
-                        //Swap
-                        int temp = copyOfBoard[x0][y0];
-                        copyOfBoard[x0][y0] = copyOfBoard[x0 - 1][y0];
-                        copyOfBoard[x0 - 1][y0] = temp;
-                        isInsideDimensions = true;
-                    }
-                    break;
-                case 2:
-                    if (y0 + 1 < dimensions) {
-                        //Swap
-                        int temp = copyOfBoard[x0][y0];
-                        copyOfBoard[x0][y0] = copyOfBoard[x0][y0 + 1];
-                        copyOfBoard[x0][y0 + 1] = temp;
-                        isInsideDimensions = true;
-                    }
-                    break;
-                case 3:
-                    if (y0-1>=0 && y0 - 1 < dimensions) {
-                        //Swap
-                        int temp = copyOfBoard[x0][y0];
-                        copyOfBoard[x0][y0] = copyOfBoard[x0][y0 - 1];
-                        copyOfBoard[x0][y0 - 1] = temp;
-                        isInsideDimensions = true;
-                    }
-                    break;
-            }
-            if (isInsideDimensions) {
-                neighbors.add(new Board(copyOfBoard));
             }
         }
         return neighbors;
+    }
+
+    //Swaps tile zero (x1,y1) with another tile (x2,y2)
+    private int[][] swapTileZero(int[][] arr, int x1, int y1, int x2, int y2){
+        int temp = arr[x1][y1];
+        arr[x1][y1] = arr[x2][y2];
+        arr[x2][y2] = temp;
+        return arr;
     }
 
     //Returns a copy of the board array
