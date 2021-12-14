@@ -20,9 +20,8 @@ public class Solver {
 
         while (!searchNodes.min().board.isGoal()) {
             SearchNode searchNode = searchNodes.delMin();
-
             for (Board board : searchNode.board.neighbors()) {
-                if ((searchNode.previousSearchNode == null || !searchNode.board.equals(board)) && !board.equals(initial)) {
+                if ((searchNode.previousSearchNode == null || !searchNode.previousSearchNode.board.equals(board) && searchNode.previousSearchNode!= null)) {
                     searchNodes.insert(new SearchNode(board, searchNode));
                 }
             }
@@ -57,7 +56,6 @@ public class Solver {
     }
 
     private class SearchNode implements Comparable<SearchNode> {
-
         private final Board board;
         private final int moves;
         private final SearchNode previousSearchNode;
@@ -78,9 +76,8 @@ public class Solver {
 
         @Override
         public int compareTo(SearchNode o) {
-            if (getManhattan() < o.getManhattan()) return -1;
-            if (getManhattan() > o.getManhattan()) return 1;
-            else return 0;
+            int priority = (getManhattan() + moves) - (o.getManhattan() + o.getMoves());
+            return priority == 0 ? getManhattan() - o.getManhattan() : priority;
         }
     }
 
