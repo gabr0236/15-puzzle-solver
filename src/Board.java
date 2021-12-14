@@ -175,23 +175,23 @@ public class Board {
 
     // a board that is obtained by exchanging any pair of tiles
     public Board twin() {
-        for (int i = 1; i < dimensions; i++) {
-            for (int j = 1; j < dimensions; j++) {
-                if (tiles[i][j - 1] != 0 && tiles[i][j] != 0) {
-                    int[][] twinBoard = copyBoardArr();
-                    int temp = twinBoard[i][j - 1];
-                    twinBoard[i][j - 1] = twinBoard[i][j];
-                    twinBoard[i][j] = temp;
-                    return new Board(twinBoard);
+            for (int i = 0; i < dimensions; i++) {
+                for (int j = 1; j < dimensions; j++) {
+                    if (tiles[i][j - 1] != 0 && tiles[i][j] != 0) {
+                        int[][] twinBoard = copyBoardArr();
+                        int temp = twinBoard[i][j - 1];
+                        twinBoard[i][j - 1] = twinBoard[i][j];
+                        twinBoard[i][j] = temp;
+                        return new Board(twinBoard);
+                    }
                 }
             }
-        }
         return null;
     }
 
     // unit testing (not graded)
     public static void main(String[] args) {
-        int[][] boardarr = {{1, 2, 3}, {0, 7, 6}, {5, 4, 8}};
+        int[][] boardarr = {{2,1},{0,3}}; //{{1, 2, 3}, {0, 7, 6}, {5, 4, 8}};
         Board board = new Board(boardarr);
 
         System.out.println(board);
