@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Board {
@@ -59,16 +60,12 @@ public class Board {
     // sum of Manhattan distances between tiles and goal
     public int manhattan() {
         int count = 0;
+        int[] coordinatesOfTile;
         for (int i = 0; i < dimensions; i++) {
             for (int j = 0; j < dimensions; j++) {
-                if (orderedTiles[i][j] != tiles[i][j]) {
-                    for (int k = 0; k < dimensions; k++) {
-                        for (int l = 0; l < dimensions; l++) {
-                            if (orderedTiles[i][j] == tiles[k][l]) {
-                                count += Math.abs((i + j) - (k + l));
-                            }
-                        }
-                    }
+                if (orderedTiles[i][j]!=0 && orderedTiles[i][j] != tiles[i][j]) {
+                   coordinatesOfTile = getCoordinatesOfTile(orderedTiles[i][j]);
+                   count += Math.abs((i + j) - (coordinatesOfTile[0] + coordinatesOfTile[1]));
                 }
             }
         }
@@ -81,7 +78,7 @@ public class Board {
                 if (tiles[i][j] == tile) return new int[]{i, j};
             }
         }
-        return null;
+        return new int[0];
     }
 
     // is this board the goal board?
@@ -131,7 +128,7 @@ public class Board {
                     }
                     break;
                 case 1:
-                    if (x0 - 1 < dimensions) {
+                    if (x0-1>=0 && x0 - 1 < dimensions) {
                         //Swap
                         int temp = copyOfBoard[x0][y0];
                         copyOfBoard[x0][y0] = copyOfBoard[x0 - 1][y0];
@@ -149,7 +146,7 @@ public class Board {
                     }
                     break;
                 case 3:
-                    if (y0 - 1 < dimensions) {
+                    if (y0-1>=0 && y0 - 1 < dimensions) {
                         //Swap
                         int temp = copyOfBoard[x0][y0];
                         copyOfBoard[x0][y0] = copyOfBoard[x0][y0 - 1];
@@ -194,12 +191,12 @@ public class Board {
 
     // unit testing (not graded)
     public static void main(String[] args) {
-        int[][] boardarr = {{8, 1, 3}, {4, 0, 2}, {7, 6, 5}};
+        int[][] boardarr = {{0, 1, 3}, {4, 2, 5}, {7, 8, 6}};
         Board board = new Board(boardarr);
 
         System.out.println(board);
         System.out.println(board.hamming());
-        System.out.println(board.manhattan());
+        System.out.println("MANHATTAN: " + board.manhattan());
 
         System.out.println("ITERABLE TEST");
         Iterable<Board> boards = board.neighbors();
