@@ -64,8 +64,10 @@ public class Board {
         for (int i = 0; i < dimensions; i++) {
             for (int j = 0; j < dimensions; j++) {
                 if (orderedTiles[i][j]!=0 && orderedTiles[i][j] != tiles[i][j]) {
-                   coordinatesOfTile = getCoordinatesOfTile(orderedTiles[i][j]);
-                   count += Math.abs(i - coordinatesOfTile[0]) + Math.abs(j - coordinatesOfTile[1]);
+                    coordinatesOfTile = getCoordinatesOfTile(orderedTiles[i][j]);
+                    if (coordinatesOfTile.length != 0) {
+                        count += Math.abs(i - coordinatesOfTile[0]) + Math.abs(j - coordinatesOfTile[1]);
+                    }
                 }
             }
         }
