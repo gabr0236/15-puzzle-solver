@@ -56,11 +56,12 @@ public class Board {
     public int hamming() {
         int[][] orderedTiles = goalBoard();
         int k = 0;
+        int numberOfTiles = dimensions*dimensions;
         int hammingCount = 0;
         for (int i = 0; i < dimensions; i++) {
             for (int j = 0; j < dimensions; j++) {
-                if (++k<dimensions) {
-                    if (++k != tiles[i][j]) hammingCount++;
+                if (++k<numberOfTiles) {
+                    if (k != tiles[i][j]) hammingCount++;
                 }
             }
         }
@@ -205,11 +206,11 @@ public class Board {
 
     // unit testing (not graded)
     public static void main(String[] args) {
-        int[][] boardarr = {{2,1},{0,3}}; //{{1, 2, 3}, {0, 7, 6}, {5, 4, 8}};
+        int[][] boardarr = {{1, 2, 3}, {0, 7, 6}, {5, 4, 8}};//{{2,1},{0,3}};
         Board board = new Board(boardarr);
 
         System.out.println(board);
-        System.out.println(board.hamming());
+        System.out.println("HAMMING: " + board.hamming());
         System.out.println("MANHATTAN: " + board.manhattan());
 
         System.out.println("ITERABLE TEST");
