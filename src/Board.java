@@ -160,7 +160,6 @@ public class Board {
         return null;
     }
 
-    // unit testing (not graded)
     public static void main(String[] args) {
         int[][] boardArr = {{1, 2, 3}, {0, 7, 6}, {5, 4, 8}};//{{2,1},{0,3}};
         Board board = new Board(boardArr);
